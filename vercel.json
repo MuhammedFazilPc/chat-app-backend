@@ -1,17 +1,16 @@
 {
-    "routes": [
-      {
-        "src": "/api/*",
-        "dest": "/api/index.js"
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/"
-      }
+    "version": 2,
+    "builds": [
+      { "src": "api/**/*.js", "use": "@vercel/node" },
+      { "src": "public/**/*", "use": "@vercel/static" }
     ],
     "rewrites": [
       {
-        "source": "/",
+        "source": "/api/(.*)",
+        "destination": "api/$1"
+      },
+      {
+        "source": "/(.*)",
         "destination": "/index.html"
       }
     ],
@@ -20,7 +19,7 @@
     },
     "headers": [
       {
-        "source": "/api/*",
+        "source": "/api/(.*)",
         "headers": [
           {
             "key": "Access-Control-Allow-Origin",
