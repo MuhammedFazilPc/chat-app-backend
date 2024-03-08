@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URL, {
 
 const io = new Server(server, { 
     cors: {
-      origin: 'http://localhost:3000',
+      origin: 'https://chat-app-client-teal.vercel.app/',
       methods: ["GET", "POST"]
     }
   });
