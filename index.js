@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose")
-const http=require('http')
-const userRoutes= require("./routes/userRoutes")
-const messageRoutes=require('./routes/messageRoutes')
+const http = require('http')
+const userRoutes = require("./routes/userRoutes")
+const messageRoutes = require('./routes/messageRoutes')
 const app = express();
-const server=http.createServer(app)
+const server = http.createServer(app)
 const { Server } = require('socket.io');
 const { Socket } = require("dgram");
 require("dotenv").config()
@@ -13,7 +13,7 @@ require("dotenv").config()
 
 app.use(cors());
 app.use(express.json());
-app.use('/api/auth',userRoutes)
+app.use('/api/auth', userRoutes)
 app.use('/api/message', messageRoutes)
 
 
@@ -23,17 +23,23 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true
 }).then(() => {
     console.log(`mongoDB connected succesfully on ${process.env.MONGO_URL}`)
-}).catch((err) => console.log(err.message))
+}).catch((err) => console.log("mongo error",err.message))
 
-const io = new Server(server, { 
-    cors: {
-      origin: 'https://chat-app-client-teal.vercel.app/',
-      methods: ["GET", "POST"]
-    }
+app.get('/', (req, res) => {
+    // Sending an HTML tag as a response
+    res.send('<h1>you are on / </h1>');
   });
-  
-  const usernameToSocketId={}
-  io.on("connection", (socket) => {
+const io = new Server(server, {
+    cors: {
+          origin: 'https://chat-app-client-teal.vercel.app/',
+        // origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+        credentials: true ,
+    }
+});
+
+const usernameToSocketId = {}
+io.on("connection", (socket) => {
     console.log(`${socket.id} connected`);
 
     socket.on('add_user', (user) => {
