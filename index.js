@@ -31,10 +31,8 @@ app.get('/', (req, res) => {
   });
 const io = new Server(server, {
     cors: {
-          origin: 'https://chat-app-client-teal.vercel.app/',
-        // origin: "http://localhost:3000",
-        methods: ["GET", "POST"],
-        credentials: true ,
+      origin: 'https://chat-app-client-teal.vercel.app/',
+      methods: ["GET", "POST"]
     }
 });
 
